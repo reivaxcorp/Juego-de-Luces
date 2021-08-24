@@ -10,7 +10,11 @@ import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
 
-
+/**
+ * 
+ * @author reivacorp
+ *
+ */
 public class Tp1 {
 
 	private JFrame frame;
