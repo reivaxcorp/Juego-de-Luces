@@ -1,5 +1,4 @@
 package com.ungscomuno.tp;
-
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
