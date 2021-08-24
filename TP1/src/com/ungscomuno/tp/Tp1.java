@@ -7,7 +7,6 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.JMenuBar;
 import javax.swing.JLabel;
-import javax.swing.SwingConstants;
 
 
 /**
