@@ -7,6 +7,8 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.JMenuBar;
 import javax.swing.JLabel;
+import javax.swing.JButton;
+import javax.swing.SwingConstants;
 
 
 /**
@@ -14,10 +16,10 @@ import javax.swing.JLabel;
  * @author reivacorp
  *
  */
-public class Tp1 {
+public class Tpui {
 
 	private JFrame frame;
-	private Model model;
+	private Tpmodel model;
 	
 	/**
 	 * Launch the application.
@@ -26,7 +28,7 @@ public class Tp1 {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Tp1 window = new Tp1();
+					Tpui window = new Tpui();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -38,7 +40,7 @@ public class Tp1 {
 	/**
 	 * Create the application.
 	 */
-	public Tp1() {
+	public Tpui() {
 		initialize();
 	}
 
@@ -65,7 +67,10 @@ public class Tp1 {
 		
 		GridLayout gridLayout = new GridLayout(4, 4, 0, 0);
 		
-		new Model(frame, spinner, gridLayout);
+		new Tpmodel(frame, spinner, gridLayout);
+		
+		JButton jugarBtn = new JButton("Jugar");
+		menuBar.add(jugarBtn);
 		frame.getContentPane().setLayout(gridLayout);
 	
 		
