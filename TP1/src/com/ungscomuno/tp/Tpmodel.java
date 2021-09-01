@@ -31,6 +31,10 @@ public class Tpmodel {
 	private ImageIcon luzOn;
 	private ImageIcon luzOff;
 	private boolean gameStart;
+	private String nombreArchivoFocoOn;
+	private String nombreArchivoFocoOff;
+
+	public Tpmodel() {}
 	
 	public Tpmodel(JFrame frame, JSpinner spinner, GridLayout gridLayout) {
 		
@@ -38,6 +42,9 @@ public class Tpmodel {
 		this.jSpinner = spinner;
 		this.gridLayout = gridLayout;
 		this.gameStart = false;
+		this.nombreArchivoFocoOn = "foco_on.png";
+		this.nombreArchivoFocoOff = "foco_off.png";		
+		
 		
 		this.cantidadLucesPorLado = 4;
 	
@@ -48,31 +55,36 @@ public class Tpmodel {
 			}
 		});
 		
+	    luzOn = cargarImagenes(nombreArchivoFocoOn);
+	    luzOff = cargarImagenes(nombreArchivoFocoOff);
 	
-		
-		cargarImagenes();
 		crearLucesYAniadir(cantidadLucesPorLado);
 	}
 	
-	private void cargarImagenes() {
+	public ImageIcon cargarImagenes(String nombreImagen) {
+		
+		Image img = null;
+ 
 		try {
-			Image imgOn = ImageIO.read(getClass().getResource("foco_on.png"));
-			Image imgOff = ImageIO.read(getClass().getResource("foco_off.png"));
+			img = ImageIO.read(getClass().getResource(nombreImagen));
 
-			luzOn = new ImageIcon(imgOn);
-			luzOff = new ImageIcon(imgOff);
-			
 		} catch (Exception ex) {
-			System.out.println(ex);
+			 throw new IllegalArgumentException();
 		}   
+		
+		return new ImageIcon(img);
 	}
 
-	private void crearLucesYAniadir(int cantidad) {
+	public void crearLucesYAniadir(int lucesPorLado) {
+		
+		if(esAnchoDeLucesValido(lucesPorLado) == false) {
+			throw new IllegalArgumentException();
+		}
 		
 		Random rn = new Random();
 		
 		luces = null;
-		luces = new JButton[cantidad][cantidad];
+		luces = new JButton[lucesPorLado][lucesPorLado];
 		for(int fila = 0; fila < luces.length; fila ++) {
 			for(int columna = 0;  columna < luces[fila].length; columna ++) {
 				luces[fila][columna] = new JButton();
@@ -198,7 +210,32 @@ public class Tpmodel {
 		}
 	}
 	
+	private void mostrarMensajeError(String msj, String titulo) {
+		int result = JOptionPane.showConfirmDialog(pFrame, msj, titulo, JOptionPane.YES_OPTION);
+		if (result == JOptionPane.OK_OPTION || result == JOptionPane.NO_OPTION) {
+		  System.exit(0);
+		}
+	}
+	
 	private void disableSpinner() {
 		jSpinner.setEnabled(false);
+	}
+	
+	public boolean esAnchoDeLucesValido(int cantidadLucesLado) {
+		
+		if(cantidadLucesLado == 4) {
+			return true;
+		} else if (cantidadLucesLado == 6) {
+			return true;
+		} else if (cantidadLucesLado == 8) {
+			return true;
+		} else {
+			return false;
+		}
+		
+	}
+	
+	public int getLucesPorLado() {
+		return cantidadLucesPorLado;
 	}
 }
