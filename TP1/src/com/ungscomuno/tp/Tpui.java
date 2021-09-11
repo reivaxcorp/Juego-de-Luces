@@ -9,6 +9,10 @@ import javax.swing.JMenuBar;
 import javax.swing.JLabel;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
+import java.awt.Component;
+import java.awt.Rectangle;
+import java.awt.ComponentOrientation;
+import java.awt.Dimension;
 
 
 /**
@@ -53,24 +57,9 @@ public class Tpui {
 		frame.setBounds(100, 100, 900, 600);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		JMenuBar menuBar = new JMenuBar();
-
-		frame.setJMenuBar(menuBar);
-		
-		JLabel lblNewLabel = new JLabel("Luces por lado");
-		menuBar.add(lblNewLabel);
-		
-		JSpinner spinner = new JSpinner();
-		spinner.setToolTipText("Multiplicador dificultad");
-		spinner.setModel(new SpinnerNumberModel(4, 4, 8, 2));
-		menuBar.add(spinner);
-		
 		GridLayout gridLayout = new GridLayout(4, 4, 0, 0);
-		
-		new Tpmodel(frame, spinner, gridLayout);
-		
-		JButton jugarBtn = new JButton("Jugar");
-		menuBar.add(jugarBtn);
+		new Tpmodel(frame, gridLayout);
+
 		frame.getContentPane().setLayout(gridLayout);
 	
 		
