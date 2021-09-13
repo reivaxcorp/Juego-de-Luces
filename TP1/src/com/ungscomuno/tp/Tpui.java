@@ -8,6 +8,7 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.JMenuBar;
 import javax.swing.JLabel;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.SwingConstants;
 import java.awt.Component;
 import java.awt.Rectangle;
@@ -58,10 +59,23 @@ public class Tpui {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		GridLayout gridLayout = new GridLayout(4, 4, 0, 0);
-		new Tpmodel(frame, gridLayout);
+		JSpinner spinner = new JSpinner();
+		spinner.setMaximumSize(new Dimension(50, 50));
+		spinner.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
+		spinner.setToolTipText("Multiplicador dificultad");
+		spinner.setModel(new SpinnerNumberModel(4, 4, 8, 2));
+		JLabel labelInfoDificultad = new JLabel("Luces por lado (Dificultad)");
+		JLabel infoGame = new JLabel("Apaga todas las luces para ganar el juego!");
+		
+		JComponent[] dialogoComponentes = new JComponent[] {
+				labelInfoDificultad,
+				spinner, 
+				infoGame
+		};
+		
+		new Tpmodel(frame, gridLayout, dialogoComponentes);
 
 		frame.getContentPane().setLayout(gridLayout);
 	
-		
 	}
 }
