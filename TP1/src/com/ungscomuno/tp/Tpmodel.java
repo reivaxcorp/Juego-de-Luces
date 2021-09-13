@@ -21,6 +21,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JSpinner;
 
 
+
 public class Tpmodel {
 
 	private int alturaAnchoLuces;
@@ -54,79 +55,75 @@ public class Tpmodel {
 		dialogoIniciarJuego();
 	}
 	
-	
-	public ImageIcon cargarImagenes(String nombreImagen) {
+	private void dialogoIniciarJuego() {
+
 		
-		Image img = null;
- 
+		int result = JOptionPane.showConfirmDialog(
+				null,
+				dialogoComponentes,
+				TITULO_EMPEZAR_JUEGO, 
+				JOptionPane.OK_CANCEL_OPTION
+				);
+		
+		if (result == JOptionPane.OK_OPTION) {
+			  prepararComponentes();
+		} else {
+			  System.exit(0);
+		}
+	}
+	
+	public void prepararComponentes() {
+		
 		try {
-			img = ImageIO.read(getClass().getResource(nombreImagen));
-
-		} catch (Exception ex) {
-			 throw new IllegalArgumentException();
-		}   
-		return new ImageIcon(img);
-	}
-
-	public JButton[][] crearLucesYAniadir(int lucesPorLado, ImageIcon luzApagada) {
-
-		JButton[][] luces = null;
-
-		if (esAnchoDeLucesValido(lucesPorLado) == false) {
-			throw new IllegalArgumentException();
-		}
-
-		luces = new JButton[lucesPorLado][lucesPorLado];
-
-		for (int fila = 0; fila < luces.length; fila++) {
-			for (int columna = 0; columna < luces[fila].length; columna++) {
-				luces[fila][columna] = new JButton();
-				luces[fila][columna].setIcon(luzApagada);
-				luces[fila][columna].setBackground(Color.BLACK);
+			if(dameSpinner().getValue() != null) {
+				alturaAnchoLuces = (int) dameSpinner().getValue();
+				gridLayout.setColumns(alturaAnchoLuces);
+				gridLayout.setRows(alturaAnchoLuces);
 			}
+		} catch (InstanceNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		return luces;
-	}
-  
-	public LinkedList<FilaColumna> obtenerLucesAleatorias(JButton[][] luces, int cantidadAleatoria) {
 		
-		LinkedList<FilaColumna> filasColumnas = new LinkedList<FilaColumna>();
-		LinkedList<FilaColumna> noRepetir = new LinkedList<FilaColumna>();
-			
-		Random filaRandon = new Random(); 
-		Random columnaRandom = new Random();
-		
-	
-		
-		for(int i = 0; i < cantidadAleatoria; i++) {
-			int filaAleatoria = filaRandon.nextInt(luces.length -1);
-			int columnaAleatoria = columnaRandom.nextInt(luces[0].length -1);
-			FilaColumna filaColumna = new FilaColumna<Integer, Integer>(
-					filaAleatoria, 
-					columnaAleatoria
-					);
-				/**
-				 * Se evita que por alguna razon no prenda alguna luz al empezar (poco probable)
-				 */
-			
-				 if(yaSePulsoLaLuz(filaAleatoria, columnaAleatoria, filasColumnas) == false) {
-					 filasColumnas.add(filaColumna);
-				 }
-	
-		}
-		return filasColumnas;
-		
+		luces = crearLuces(alturaAnchoLuces, luzApagada);
+		agregarLucesAlFrame(luces, pFrame);
+		aniadirEventoDeLuz(luces);
+		simularClickAleatorios(luces);
 	}
 	
-	private boolean yaSePulsoLaLuz(int fila, int columna, LinkedList<FilaColumna> filasColumnas) {
-		for(FilaColumna agregada: filasColumnas) {
-			if((int)agregada.getFila() == fila && (int)agregada.getColumna() == columna) {
-				return true;
-			}
-		}
-		return false;
+	 
+	private void agregarLucesAlFrame(JButton [][] luces, JFrame pFrame ) {
+		
+		// Aniadimos al frame
+				for(int fila = 0; fila < luces.length; fila ++) {
+					for(int columna = 0; columna < luces[0].length; columna ++) {
+						pFrame.add(luces[fila][columna]);	
+					}
+				}
 	}
 	
+	private void aniadirEventoDeLuz(JButton [][] luces) {
+		for(int fila = 0; fila < luces.length; fila ++) {
+			for(int columna = 0; columna < luces[0].length; columna ++) {
+				int pFila = fila;
+				int pColumna = columna; 
+				luces[fila][columna].addActionListener(new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						// TODO Auto-generated method stub
+						if (empezarJuego == true) {
+							clickLuz(pFila, pColumna, luces);
+							if(comprobarJuegoGanado(luces)) {
+								dialogoReiniciarJuego();
+							}	
+						}
+					}
+				});
+ 			}
+		}
+	}
+	
+
 	private void simularClickAleatorios(JButton[][] luces) {
  		// las veces que se presionara en forma aleatoria corresponde tamaño del ancho en horizontal de luces.
 		LinkedList<FilaColumna> filasColumnas = obtenerLucesAleatorias(luces, alturaAnchoLuces);
@@ -151,44 +148,79 @@ public class Tpmodel {
 							e.printStackTrace();
 						}
 					}
-			        empezarJuego = true;
+			        empezarJuego = true; // habilitamos los clicks
 			    }  
 			}.start();
 	}
-	
-	private void aniadirEventoDeLuz(JButton button, int fila, int columna) {
-		button.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				if (empezarJuego == true) {
-					clickLuz(fila, columna, luces);
-					
-					
-					if(comprobarJuegoGanado(luces)) {
-						dialogoReiniciarJuego();
-					}
-					
-				}
+
+	public JButton[][] crearLuces(int lucesPorLado, ImageIcon luzApagada) {
+
+		JButton[][] luces = null;
+
+		if (esAnchoDeLucesValido(lucesPorLado) == false) {
+			throw new IllegalArgumentException();
+		}
+
+		luces = new JButton[lucesPorLado][lucesPorLado];
+
+		for (int fila = 0; fila < luces.length; fila++) {
+			for (int columna = 0; columna < luces[fila].length; columna++) {
+				luces[fila][columna] = new JButton();
+				luces[fila][columna].setIcon(luzApagada);
+				luces[fila][columna].setBackground(Color.BLACK);
 			}
-		});
+		}
+		return luces;
 	}
- 
+  
+	public LinkedList<FilaColumna> obtenerLucesAleatorias(JButton[][] luces, int cantidadAleatoria) {
+		
+		LinkedList<FilaColumna> filasColumnas = new LinkedList<FilaColumna>();
+			
+		Random filaRandon = new Random(); 
+		Random columnaRandom = new Random();
+		
+		for(int i = 0; i < cantidadAleatoria; i++) {
+			int filaAleatoria = filaRandon.nextInt(luces.length -1);
+			int columnaAleatoria = columnaRandom.nextInt(luces[0].length -1);
+			FilaColumna filaColumna = new FilaColumna<Integer, Integer>(
+					filaAleatoria, 
+					columnaAleatoria
+					);
+					
+				//Se evita que por alguna razon no prenda alguna luz al empezar (poco probable)		
+		    	 if(luzYaSeleccionada(filaAleatoria, columnaAleatoria, filasColumnas) == false) {
+					 filasColumnas.add(filaColumna);
+				 }
 	
+		}
+		return filasColumnas;
+		
+	}
+	
+	private boolean luzYaSeleccionada(int fila, int columna, LinkedList<FilaColumna> filasColumnas) {
+		for(FilaColumna agregada: filasColumnas) {
+			if((int)agregada.getFila() == fila && (int)agregada.getColumna() == columna) {
+				return true;
+			}
+		}
+		return false;
+	}
+	 
 	public void clickLuz(int fila, int columna, JButton [][] luces) {
 		
 		if (esLuzExistente(fila, columna, luces) == false) {
 			throw new IllegalArgumentException();
 		}
-		prenderOApagar(fila, columna, luces); // centro
-		prenderOApagar(fila - 1, columna, luces); // izquierda
-		prenderOApagar(fila + 1, columna, luces); // derecha
-		prenderOApagar(fila, columna - 1, luces); // abajo
-		prenderOApagar(fila, columna + 1, luces); // arriba
-
+		prenderOApagarLuz(fila, columna, luces); // centro
+		prenderOApagarLuz(fila - 1, columna, luces); // izquierda
+		prenderOApagarLuz(fila + 1, columna, luces); // derecha
+		prenderOApagarLuz(fila, columna - 1, luces); // abajo
+		prenderOApagarLuz(fila, columna + 1, luces); // arriba
+ 
 	}
 	
-	private void prenderOApagar(int f, int c, JButton [][] luces){
+	private void prenderOApagarLuz(int f, int c, JButton [][] luces){
 			
 		if(f >= luces.length || f < 0) {
 			return;
@@ -238,52 +270,6 @@ public class Tpmodel {
 		
 	}
 	
-	private void dialogoIniciarJuego() {
-
-	
-		int result = JOptionPane.showConfirmDialog(
-				null,
-				dialogoComponentes,
-				TITULO_EMPEZAR_JUEGO, 
-				JOptionPane.OK_CANCEL_OPTION
-				);
-		
-		if (result == JOptionPane.OK_OPTION) {
-			  prepararComponentes();
-		} else {
-			  System.exit(0);
-		}
-	}
- 
-	public void prepararComponentes() {
-	
-		try {
-			if(dameSpinner().getValue() != null) {
-				alturaAnchoLuces = (int) dameSpinner().getValue();
-				gridLayout.setColumns(alturaAnchoLuces);
-				gridLayout.setRows(alturaAnchoLuces);
-			}
-		} catch (InstanceNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		luces = crearLucesYAniadir(alturaAnchoLuces, luzApagada);
-		agregarAlFrame(luces, pFrame);
-		simularClickAleatorios(luces);
-	}
-	
-	private void agregarAlFrame(JButton [][] luces, JFrame pFrame ) {
-		
-		// Aniadimos al frame
-				for(int fila = 0; fila < luces.length; fila ++) {
-					for(int columna = 0; columna < luces[0].length; columna ++) {
-						aniadirEventoDeLuz(luces[fila][columna], fila, columna);
-						pFrame.add(luces[fila][columna]);	
-					}
-				}
-	}
-	
 	public JSpinner dameSpinner() throws InstanceNotFoundException {
 		JSpinner spinner = null;
 		for(int i = 0; i < dialogoComponentes.length; i++) {
@@ -297,6 +283,19 @@ public class Tpmodel {
 		
 		return spinner;
 	}
+
+	public ImageIcon cargarImagenes(String nombreImagen) {
+		
+		Image img = null;
+ 
+		try {
+			img = ImageIO.read(getClass().getResource(nombreImagen));
+
+		} catch (Exception ex) {
+			 throw new IllegalArgumentException();
+		}   
+		return new ImageIcon(img);
+	}
 	
 	public boolean esLuzExistente(int fila, int columna, JButton  [][] luces) {
 		if ((fila < 0 || fila > luces.length - 1) || (columna < 0 || columna > luces[0].length - 1)) {
@@ -304,8 +303,7 @@ public class Tpmodel {
 		}
 		return true;
 	}
-	
-	
+
 	public boolean esAnchoDeLucesValido(int cantidadLucesLado) {
 		
 		if(cantidadLucesLado == 4) {
