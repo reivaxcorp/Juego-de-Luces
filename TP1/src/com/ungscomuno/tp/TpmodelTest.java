@@ -32,6 +32,15 @@ public class TpmodelTest {
 	}
 
 	@Test
+	public void cargarImagenExistente() {
+		ImageIcon imageNotNull_1 = tpmodel.cargarImagenes("foco_on.png");
+		ImageIcon imageNotNull_2 = tpmodel.cargarImagenes("foco_off.png");
+
+		assertNotNull(imageNotNull_1);
+		assertNotNull(imageNotNull_2);
+	}
+
+	@Test
 	public void comprobarJuegoNoGanado() {
 		// setup
 		JButton[][] luces_1 = tpmodel.crearLuces(4, luzApagada);
@@ -116,16 +125,6 @@ public class TpmodelTest {
 
 	}
 
-	@Test
-	public void cargarImagenExistente() {
-
-		ImageIcon imageNotNull_1 = tpmodel.cargarImagenes("foco_on.png");
-		ImageIcon imageNotNull_2 = tpmodel.cargarImagenes("foco_off.png");
-
-		assertNotNull(imageNotNull_1);
-		assertNotNull(imageNotNull_2);
-
-	}
 
 	@Test
 	public void aniadirLucesCantidadNoPermitida() {
