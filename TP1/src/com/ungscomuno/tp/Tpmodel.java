@@ -25,7 +25,6 @@ import javax.swing.JSpinner;
 public class Tpmodel {
 
 	private int alturaAnchoLuces;
-	
 	private JFrame pFrame;
  	private GridLayout gridLayout;
  	private JComponent[] dialogoComponentes;
