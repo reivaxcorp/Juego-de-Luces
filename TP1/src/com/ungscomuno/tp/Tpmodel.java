@@ -220,8 +220,8 @@ public class Tpmodel {
 		prenderOApagarLuz(fila + 1, columna, luces); // derecha
 		prenderOApagarLuz(fila, columna - 1, luces); // abajo
 		prenderOApagarLuz(fila, columna + 1, luces); // arriba
- 
-	}
+		
+ 	}
 	
 	private void prenderOApagarLuz(int f, int c, JButton [][] luces){
 			
