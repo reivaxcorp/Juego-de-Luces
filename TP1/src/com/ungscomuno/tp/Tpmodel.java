@@ -103,6 +103,7 @@ public class Tpmodel {
 	}
 	
 	private void aniadirEventoDeLuz(JButton [][] luces) {
+		
 		for(int fila = 0; fila < luces.length; fila ++) {
 			for(int columna = 0; columna < luces[0].length; columna ++) {
 				int pFila = fila;
@@ -125,6 +126,7 @@ public class Tpmodel {
 	
 
 	private void simularClickAleatorios(JButton[][] luces) {
+		
  		// las veces que se presionara en forma aleatoria corresponde tamaño del ancho en horizontal de luces.
 		LinkedList<FilaColumna> filasColumnas = obtenerLucesAleatorias(luces, alturaAnchoLuces);
 	
@@ -199,6 +201,7 @@ public class Tpmodel {
 	}
 	
 	private boolean luzYaSeleccionada(int fila, int columna, LinkedList<FilaColumna> filasColumnas) {
+		
 		for(FilaColumna agregada: filasColumnas) {
 			if((int)agregada.getFila() == fila && (int)agregada.getColumna() == columna) {
 				return true;
@@ -271,7 +274,9 @@ public class Tpmodel {
 	}
 	
 	public JSpinner dameSpinner() throws InstanceNotFoundException {
+		
 		JSpinner spinner = null;
+		
 		for(int i = 0; i < dialogoComponentes.length; i++) {
 			if(dialogoComponentes[i] instanceof JSpinner) {
 				spinner = (JSpinner) dialogoComponentes[i];
@@ -298,10 +303,12 @@ public class Tpmodel {
 	}
 	
 	public boolean esLuzExistente(int fila, int columna, JButton  [][] luces) {
+		
 		if ((fila < 0 || fila > luces.length - 1) || (columna < 0 || columna > luces[0].length - 1)) {
 			return false;
 		}
 		return true;
+		
 	}
 
 	public boolean esAnchoDeLucesValido(int cantidadLucesLado) {
