@@ -3,7 +3,7 @@ package com.ungscomuno.tp;
 import static org.junit.Assert.*;
 
 import java.util.LinkedList;
-import java.util.Random;
+
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -14,13 +14,11 @@ import org.junit.Test;
 public class TpmodelTest {
 
 	private Tpmodel tpmodel;
-	private ImageIcon luzPrendida;
 	private ImageIcon luzApagada;
 
 	@Before
 	public void inicializarComponentes() {
 		tpmodel = new Tpmodel();
-		luzPrendida = tpmodel.cargarImagenes(tpmodel.NOMBRE_ARCHIVO_FOCO_ON);
 		luzApagada = tpmodel.cargarImagenes(tpmodel.NOMBRE_ARCHIVO_FOCO_OFF);
 	}
 
