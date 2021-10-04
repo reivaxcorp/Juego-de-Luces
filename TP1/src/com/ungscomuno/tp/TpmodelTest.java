@@ -1,13 +1,9 @@
 package com.ungscomuno.tp;
 
 import static org.junit.Assert.*;
-
 import java.util.LinkedList;
-
-
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-
 import org.junit.Before;
 import org.junit.Test;
 

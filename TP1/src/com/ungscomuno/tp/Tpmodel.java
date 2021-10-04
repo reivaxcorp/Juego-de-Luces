@@ -1,6 +1,5 @@
 package com.ungscomuno.tp;
 
-
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.Image;
@@ -18,7 +17,6 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JSpinner;
-
 
 
 public class Tpmodel {

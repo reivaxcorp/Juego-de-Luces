@@ -1,6 +1,5 @@
 package com.ungscomuno.tp;
 import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import java.awt.GridLayout;
 import javax.swing.JSpinner;
